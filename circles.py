@@ -9,7 +9,7 @@ def draw():
     diameter= WIDTH
     for i in range(50):
         radius = diameter // 2
-        screen.draw.circle((WIDTH//2, HEIGHT//2), radius, (r,g,b))
+        screen.draw.circle((250, 250), radius, (r,g,b))
         r -= 5
         g += 5
         diameter -= 10
