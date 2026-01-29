@@ -51,3 +51,7 @@ def update():
 clock.schedule(time_up, 60.0)
 
 pgzrun.go()
+
+# Make game themed toward ask and pikachu
+#Try and add new aspects e.g make pikachu smaller when collide
+#Try make it 2 player
