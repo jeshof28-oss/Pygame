@@ -1,4 +1,5 @@
 import pgzrun
+import pygame
 from random import randint
 
 WIDTH = 600
@@ -7,10 +8,14 @@ HEIGHT = 500
 score = 0
 Game_over=False
 
-ash=Actor("ash").pos=100,100
+ash=Actor("ash")
+ash.pos=100,100
+
 
 pokeball=Actor("pokeball")
-pokeball.pos=200,200
+pokeball.pos=-200,200
+ash._surf=pygame.transform.scale(ash._surf,(100,100))
+pokeball._surf=pygame.transform.scale(pokeball._surf,(100,100))
 
 def draw():
     screen.blit("background", (0,0))
