@@ -13,11 +13,12 @@ ash.pos=100,100
 
 
 pokeball=Actor("pokeball")
-pokeball.pos=300,300
+
 ash._surf=pygame.transform.scale(ash._surf,(100,100))
 ash._update_pos()
 pokeball._surf=pygame.transform.scale(pokeball._surf,(100,100))
 pokeball._update_pos()
+pokeball.pos=300,300
 
 def draw():
     screen.blit("background", (0,0))
