@@ -13,5 +13,5 @@ for i in range(2):
     records.append(record)
 
 print("\n"+"All Group Records:")
-for record in records:
-    print(record)
+for index, record in enumerate(records):
+    print(f"Group {index}: \n{record}")
