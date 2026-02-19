@@ -58,3 +58,5 @@ def on_mouse_down(pos):
 
 create_sats()
 pgzrun.go()
+
+# HW: Replace satellites with *different* planets
