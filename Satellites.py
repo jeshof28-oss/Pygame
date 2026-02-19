@@ -25,10 +25,10 @@ def create_sats():
 def draw():
     global total_time
 
-    screen.blit("background", (0,0))
+    screen.blit("space", (0,0))
     number=1
     for satellite in sats:
-        screen.draw.text(str(number), (satellite.pos[0]), satellite.pos[1]+20)
+        screen.draw.text(str(number), (satellite.pos[0], satellite.pos[1]+20))
         satellite.draw()
         number=number + 1
     
@@ -51,7 +51,7 @@ def on_mouse_down(pos):
         if sats[next_sat].collidepoint(pos):
             if next_sat:
                 lines.append((sats[next_sat-1].pos,sats[next_sat].pos))
-                next_sat=next_sat+1
+            next_sat=next_sat+1
         else:
             lines=[]
             next_sat=0
