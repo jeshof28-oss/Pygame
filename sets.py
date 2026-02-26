@@ -34,3 +34,5 @@ while True:
 
     else:
         print("Enter a valid number.")
+
+# Write a program which tells whether the given input string is a pangram or not. Use sets
