@@ -9,17 +9,18 @@ center_y=HEIGHT / 2
 CENTRE = (center_x , center_y)
 final_level=6
 start_speed=6
-items=["bag", "battery", "bottle", "chips"]
+ITEMS=["bag", "battery", "bottle", "chips"]
 
 game_over= False
-game_complete= True
+game_complete= False
 current_level= 1
 items = []
 animations = []
 
 def draw():
     global items, current_level, game_over, game_complete
-    screen.blit("bg", (0,0))
+    screen.clear()
+    screen.blit("ocean", (0,0))
     if game_over:
         display_message("Game Over, try again?")
     if game_complete:
@@ -41,16 +42,16 @@ def make_items(num_of_extra):
     return new_items
 
 def get_option_to_create(num_of_extra):
-    items_to_make=[]
+    items_to_make=["paper"]
     for i in range(0, num_of_extra):
-        random_select=random.choice(items)
+        random_select=random.choice(ITEMS)
         items_to_make.append(random_select)
     return items_to_make
 
-def create_items():
+def create_items(items_to_make):
     new_items=[]
     for i in items_to_make:
-        new_item=Actor(option + "img")
+        new_item=Actor(i)
         new_items.append(new_item)
     return new_items
 
@@ -59,7 +60,7 @@ def layout_items(items_to_lay):
     gap_size= WIDTH / number_of_gaps
     random.shuffle(items_to_lay)
     for index, item in enumerate(items_to_lay):
-        new_x_pos=index*gap_size
+        new_x_pos=(index+1) * gap_size
         item.x=new_x_pos
 
 def animate_items(items_to_animate):
@@ -74,25 +75,36 @@ def handle_game_over():
     global game_over
     game_over=True
 
-def on_mouse_click(pos):
-    global items
+def on_mouse_down(pos):
+    global items, current_level
 
     for i in items:
-        if item.collidepoint(pos):
-            if "bag" in items:
-                items.remove(i)
+        if i.collidepoint(pos):
+            if "paper" in i.image:
+                level_up()
 
-                if len (items) == 0:
-                    level_up()
+            else:
+                handle_game_over()
 
 def level_up():
-    global currrent_level, game_complete
+    global current_level, game_complete, items, animations
+    stop_animations(animations)
     if current_level == final_level:
         game_complete=True
+
     else:
         current_level +=1
+        items=[]
+        animations=[]
+
+def stop_animations(animations_to_stop):
+    for i in animations_to_stop:
+        if i.running:
+            i.stop()
+
+
 
 def display_message(message):
-    screen.draw.text(message, center=CENTRE, fontize=60, color="white")
+    screen.draw.text(message, center=CENTRE, fontsize=60, color="white")
 
 pgzrun.go()
