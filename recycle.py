@@ -70,3 +70,29 @@ def animate_items(items_to_animate):
         animation = animate(i, duration=duration, on_finished=handle_game_over, y=HEIGHT)
         animations.append(animation)
     
+def handle_game_over():
+    global game_over
+    game_over=True
+
+def on_mouse_click(pos):
+    global items
+
+    for i in items:
+        if item.collidepoint(pos):
+            if "bag" in items:
+                items.remove(i)
+
+                if len (items) == 0:
+                    level_up()
+
+def level_up():
+    global currrent_level, game_complete
+    if current_level == final_level:
+        game_complete=True
+    else:
+        current_level +=1
+
+def display_message(message):
+    screen.draw.text(message, center=CENTRE, fontize=60, color="white")
+
+pgzrun.go()
