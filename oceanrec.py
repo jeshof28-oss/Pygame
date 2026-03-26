@@ -10,6 +10,7 @@ CENTRE = (center_x , center_y)
 final_level=6
 start_speed=6
 
+# trash items
 ITEMS=["bag", "battery", "bottle", "chips"]
 
 game_over= False
@@ -17,15 +18,9 @@ game_complete= False
 current_level= 1
 items = []
 animations = []
-trash_left = 0
-
-trash_left = 0
-for i in items_to_make:
-    if i in ITEMS:
-        trash_left += 1
 
 def draw():
-    global items, game_over, game_complete
+    global items, current_level, game_over, game_complete
     screen.clear()
     screen.blit("ocean", (0,0))
     if game_over:
@@ -37,26 +32,25 @@ def draw():
             item.draw()
 
 def update():
-    global items
-    if len(items) == 0 and not game_over and not game_complete:
-        items[:] = make_items(current_level)
+    global items, current_level
+    if len(items) == 0:
+        items = make_items(current_level)
 
 def make_items(num_of_extra):
-    global trash_left
     items_to_make = get_option_to_create(num_of_extra)
-
     new_items = create_items(items_to_make)
     layout_items(new_items)
     animate_items(new_items)
     return new_items
 
 def get_option_to_create(num_of_extra):
-    items_to_make=[]
-    items_to_make.append(random.choice(ITEMS))
+    # correct item = trash (bag)
+    items_to_make=["bag"]
+    
+    # add mix of trash + fish
     for i in range(0, num_of_extra):
-        items_to_make.append(random.choice(ITEMS))
-    for i in range(0, num_of_extra):
-        items_to_make.append("fish")
+        random_select=random.choice(ITEMS + ["fish"])
+        items_to_make.append(random_select)
     return items_to_make
 
 def create_items(items_to_make):
@@ -89,15 +83,15 @@ def handle_game_over():
     game_over=True
 
 def on_mouse_down(pos):
-    global items, trash_left
+    global items, current_level
+
     for i in items:
         if i.collidepoint(pos):
+            # click trash = good
             if i.image in ITEMS:
-                items.remove(i)
-                trash_left -= 1
-                if trash_left == 0:
-                    level_up()
+                level_up()
                 return
+            # click fish = bad
             elif i.image == "fish":
                 handle_game_over()
                 return
@@ -121,3 +115,5 @@ def display_message(message):
     screen.draw.text(message, center=CENTRE, fontsize=60, color="white")
 
 pgzrun.go()
+
+# Click trash, avoid fish

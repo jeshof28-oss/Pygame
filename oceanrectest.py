@@ -19,11 +19,6 @@ items = []
 animations = []
 trash_left = 0
 
-trash_left = 0
-for i in items_to_make:
-    if i in ITEMS:
-        trash_left += 1
-
 def draw():
     global items, game_over, game_complete
     screen.clear()
@@ -44,7 +39,7 @@ def update():
 def make_items(num_of_extra):
     global trash_left
     items_to_make = get_option_to_create(num_of_extra)
-
+    trash_left = len([for i in items_to_make if i in ITEMS])
     new_items = create_items(items_to_make)
     layout_items(new_items)
     animate_items(new_items)
