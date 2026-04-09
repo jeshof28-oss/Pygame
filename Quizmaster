@@ -79,7 +79,7 @@ def read_next_question():
 def on_mouse_down(pos):
     index = 1
     for box in answer_boxes:
-        if box.collidepoint(pos)
+        if box.collidepoint(pos):
             if index in int(question[5]):
                 correct_answer()
             else:
@@ -88,4 +88,39 @@ def on_mouse_down(pos):
     if skip_box.collidepoint(pos):
         skip_question()
 
-    
+def correct_answer():
+    global score, question, time_left, questions
+    score=score+1
+    if questions:
+        questions=read_next_question()
+        time_left =10
+    else:
+        game_over()
+
+def game_over():
+    global questions, time_left, is_game_over
+    message= f"Game over \n You got {score} questions correct."
+    questions = [message, "-","-","-","-","-",5]
+    time_left=0
+    is_game_over=True
+
+def skip_question():
+    global questions, time_left 
+    if questions and not is_game_over:
+        questions=read_next_question()
+        time_left=0
+    else:
+        game_over()
+
+def update_time_left():
+    global time_left
+    if time_left:
+        time_left = time_left - 1
+
+read_question_file()
+question = read_next_question()
+clock.schedule_interval(update_time_left)
+
+pgzrun.go()
+
+
