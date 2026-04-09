@@ -1,0 +1,4 @@
+What's the capital of India?, Chennai, Goa, Hyderabad, New Delhi, 4
+What's the boiling point of water?, 45C, 63C, 21C, 100C, 4
+What are unmodifiable lists called in python?, Sets, Lists, Variables, Tuples, 4
+What's the capital of Russia?, Warsaw, London, New York, Moscow, 4

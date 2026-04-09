@@ -1,3 +1,6 @@
+from pygame import Rect
+import pgzrun
+
 TITLE="Quizmaster"
 WIDTH=870
 HEIGHT=650
@@ -15,12 +18,13 @@ score = 0
 time_left = 10
 question_file = "questions.txt"
 marqueee_message = ""
-game_over = False
+is_game_over = False
 
 answer_boxes = [answer_box_1,answer_box_2,answer_box_3,answer_box_4]
 questions=[]
 question_count = 0
 question_index = 0
+current_question=[]
 
 marquee_box.move_ip(0,0)
 question_box.move_ip(20,100)
@@ -29,6 +33,7 @@ answer_box_1.move_ip(20,270)
 answer_box_2.move_ip(370,270)
 answer_box_3.move_ip(20,450)
 answer_box_4.move_ip(370,450)
+skip_box.move_ip(150,330)
 
 def draw():
     global marqueee_message
@@ -46,13 +51,13 @@ def draw():
     marqueee_message = marqueee_message + f"Q: {question_index} of {question_count}"
 
     screen.draw.textbox(marqueee_message, marquee_box, color="white")
-    screen.draw.textbox( str(time_left, timer_box, color="white", shadow=(0.5,0.5), scolor="dim grey"))
+    screen.draw.textbox( str(time_left), timer_box, color="white", shadow=(0.5,0.5), scolor="dim grey")
 
     screen.draw.textbox("Skip", skip_box, color="white", shadow=(0.5,0.5))
-
+    screen.draw.textbox(current_question[0],question_box,color="white")
     index = 1
     for i in answer_boxes:
-        screen.draw.textbox(question[index].strip(), i, color="black")
+        screen.draw.textbox(current_question[index].strip(), i, color="black")
         index=index+1
     
 def update():
@@ -65,10 +70,10 @@ def move_marquee():
 
 def read_question_file():
     global question_count, questions
-    question_f=open(question_file_name, "r")
-    for questions in question_f:
-        questions.append(question)
-        question_count=question + 1
+    question_f=open(question_file, "r")
+    for i in question_f:
+        questions.append(i)
+        question_count+= 1
     question_f.close()
 
 def read_next_question():
@@ -80,34 +85,35 @@ def on_mouse_down(pos):
     index = 1
     for box in answer_boxes:
         if box.collidepoint(pos):
-            if index in int(question[5]):
+            if index == int(current_question[5]):
                 correct_answer()
             else:
                 game_over()
+        index+=1
 
     if skip_box.collidepoint(pos):
         skip_question()
 
 def correct_answer():
-    global score, question, time_left, questions
+    global score, current_question, time_left, questions
     score=score+1
     if questions:
-        questions=read_next_question()
+        current_question=read_next_question()
         time_left =10
     else:
         game_over()
 
 def game_over():
-    global questions, time_left, is_game_over
+    global questions, time_left, is_game_over, current_question
     message= f"Game over \n You got {score} questions correct."
-    questions = [message, "-","-","-","-","-",5]
+    current_question = [message, "-","-","-","-","-",5]
     time_left=0
     is_game_over=True
 
 def skip_question():
-    global questions, time_left 
+    global questions, time_left, current_question
     if questions and not is_game_over:
-        questions=read_next_question()
+        current_question=read_next_question()
         time_left=0
     else:
         game_over()
@@ -118,8 +124,8 @@ def update_time_left():
         time_left = time_left - 1
 
 read_question_file()
-question = read_next_question()
-clock.schedule_interval(update_time_left)
+current_question = read_next_question()
+clock.schedule_interval(update_time_left,1)
 
 pgzrun.go()
 
