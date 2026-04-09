@@ -87,4 +87,5 @@ def on_mouse_down(pos):
 
     if skip_box.collidepoint(pos):
         skip_question()
+
     
